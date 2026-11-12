@@ -1,21 +1,31 @@
-# NumWorks Ultimate
+# Atlas STI2D
 
-Application externe EADK pour calculatrices NumWorks compatibles. Cette première version propose un formulaire de référence STI2D (électricité, chimie, ondes/énergie, mathématiques et mécanique).
+Application externe EADK pour NumWorks : fiches de reference en mathematiques, physique, chimie, 2I2D et specialites AC, EE, ITEC et SIN, plus conversions.
 
-## Construire le fichier NWA
+## Compilation et publication
 
-Le workflow GitHub Actions est défini dans `.github/workflows/build.yml`. Il compile l'application à chaque push sur `main` et peut aussi être lancé manuellement depuis l'onglet **Actions**. Le fichier `app.nwa` est publié dans l'artefact `NumWorks-Ultimate-NWA` du workflow.
+Le workflow GitHub Actions compile `output/app.nwa`, publie l'artefact et met a jour la Release.
 
 ## Installation
 
-Télécharger l'artefact depuis l'onglet Actions, extraire `app.nwa`, puis l'importer avec https://my.numworks.com/apps. La compatibilité dépend de la version d'Epsilon et du modèle. Les applications externes sont masquées en mode examen et peuvent être supprimées lors d'un RESET.
+Telecharger `app.nwa` dans [Releases](https://github.com/LJM191/NumWorks-Ultimate/releases), puis l'importer sur https://my.numworks.com/apps.
 
-## Structure
+## Navigation
 
-- `src/main.c` : application native.
-- `src/icon.png` : icône.
-- `Makefile` : compilation EADK.
-- `.github/workflows/build.yml` : compilation automatisée.
-- `docs/INSTALLATION.md` : guide d'installation et de dépannage.
+- Fleches haut/bas : naviguer.
+- OK : ouvrir une rubrique ou une fiche.
+- BACK : revenir.
+- ON/OFF : quitter.
 
-Ce projet est une application externe, pas un firmware alternatif. Elle ne lit pas les PDF et ne remplace pas le système Epsilon.
+L'interface ne redessine l'ecran qu'apres une action utilisateur et attend le rafraichissement vertical avant de pousser les pixels, afin de limiter les scintillements et artefacts. Les performances reelles doivent etre verifiees sur la calculatrice.
+
+## Contenu
+
+Les formules sont organisees par discipline. Elles constituent un aide-memoire de revision, pas une liste exhaustive garantie des attendus du bac : certains contenus dependent du champ specifique choisi et du cours suivi.
+
+## Sources officielles
+
+- [Eduscol - Programmes et ressources STI2D](https://eduscol.education.gouv.fr/5856/programmes-et-ressources-en-serie-sti2d)
+- [Eduscol - Specialite SIN](https://sti.eduscol.education.fr/formations/bac-technologique/sti2d-specialite-systemes-dinformation-et-numerique-sin)
+- [Eduscol - Horaires et organisation STI2D](https://eduscol.education.gouv.fr/5667/horaires-de-la-serie-sciences-et-technologies-de-l-industrie-et-du-developpement-durable-sti2d)
+
