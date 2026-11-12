@@ -4,7 +4,7 @@ Application externe EADK pour calculatrices NumWorks compatibles. Cette premièr
 
 ## Construire le fichier NWA
 
-Le workflow GitHub Actions compile automatiquement l'application à chaque push et sur demande. Le fichier `app.nwa` est publié dans l'artefact `NumWorks-Ultimate-NWA` du workflow.
+Le workflow GitHub Actions est défini dans `.github/workflows/build.yml`. Il compile l'application à chaque push sur `main` et peut aussi être lancé manuellement depuis l'onglet **Actions**. Le fichier `app.nwa` est publié dans l'artefact `NumWorks-Ultimate-NWA` du workflow.
 
 ## Installation
 
@@ -16,6 +16,6 @@ Télécharger l'artefact depuis l'onglet Actions, extraire `app.nwa`, puis l'imp
 - `src/icon.png` : icône.
 - `Makefile` : compilation EADK.
 - `.github/workflows/build.yml` : compilation automatisée.
-- `web/index.html` : compagnon web local.
+- `docs/INSTALLATION.md` : guide d'installation et de dépannage.
 
 Ce projet est une application externe, pas un firmware alternatif. Elle ne lit pas les PDF et ne remplace pas le système Epsilon.
