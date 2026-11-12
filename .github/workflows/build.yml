@@ -10,8 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Select Node.js 20 for nwlink
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Show build tool versions
+        run: |
+          node --version
+          npm --version
       - name: Install ARM toolchain
         uses: numworks/setup-arm-toolchain@latest
+      - name: Check NumWorks linker
+        run: npx --yes -- nwlink@0.0.16 eadk-cflags
       - name: Build NWA
         run: make clean build
       - name: Upload NWA artifact
