@@ -1,0 +1,20 @@
+name: Build NumWorks Ultimate
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ARM toolchain
+        uses: numworks/setup-arm-toolchain@latest
+      - name: Build NWA
+        run: make clean build
+      - name: Upload NWA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NumWorks-Ultimate-NWA
+          path: output/app.nwa
+          if-no-files-found: error
