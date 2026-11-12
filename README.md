@@ -1,31 +1,54 @@
-# Atlas STI2D
+<p align="center">
+  <img src="src/icon.png" width="88" alt="Logo Atlas">
+</p>
 
-Application externe EADK pour NumWorks : fiches de reference en mathematiques, physique, chimie, 2I2D et specialites AC, EE, ITEC et SIN, plus conversions.
+<h1 align="center">Atlas</h1>
 
-## Compilation et publication
+<p align="center">
+  <strong>Le mémo de formules STI2D sur calculatrice NumWorks.</strong><br>
+  Une application externe légère pour retrouver rapidement les relations essentielles du programme.
+</p>
 
-Le workflow GitHub Actions compile `output/app.nwa`, publie l'artefact et met a jour la Release.
+Atlas rassemble des formules classées par discipline : mathématiques, physique, chimie, 2I2D, SIN, EE, ITEC, AC et conversions. L'objectif est simple : accéder rapidement à une formule, sans parcourir de longs paragraphes de cours.
+
+## Fonctionnalités
+
+- Navigation par matières, chapitres et fiches.
+- Formules affichées directement, avec les unités utiles lorsqu'elles sont pertinentes.
+- Navigation au clavier de la NumWorks : flèches, OK et BACK.
+- Interface sombre conçue pour l'écran de la calculatrice.
+- Application native externe au système Epsilon.
 
 ## Installation
 
-Telecharger `app.nwa` dans [Releases](https://github.com/LJM191/NumWorks-Ultimate/releases), puis l'importer sur https://my.numworks.com/apps.
+1. Ouvrir la dernière [Release Atlas](https://github.com/LJM191/Atlas/releases).
+2. Télécharger le fichier `app.nwa`.
+3. Ouvrir [my.numworks.com/apps](https://my.numworks.com/apps) et importer le fichier.
 
-## Navigation
+Les applications externes sont masquées en mode examen. La compatibilité dépend de la version d'Epsilon installée.
 
-- Fleches haut/bas : naviguer.
-- OK : ouvrir une rubrique ou une fiche.
-- BACK : revenir.
-- ON/OFF : quitter.
+## Commandes
 
-L'interface ne redessine l'ecran qu'apres une action utilisateur et attend le rafraichissement vertical avant de pousser les pixels, afin de limiter les scintillements et artefacts. Les performances reelles doivent etre verifiees sur la calculatrice.
+| Touche | Action |
+|---|---|
+| Haut / Bas | Déplacer la sélection |
+| OK | Ouvrir une matière ou afficher une formule |
+| BACK | Revenir à la liste précédente |
+| ON/OFF | Quitter Atlas |
 
-## Contenu
+## Compilation
 
-Les formules sont organisees par discipline. Elles constituent un aide-memoire de revision, pas une liste exhaustive garantie des attendus du bac : certains contenus dependent du champ specifique choisi et du cours suivi.
+Le projet utilise l'EADK NumWorks et `nwlink`. GitHub Actions compile automatiquement le fichier NWA à chaque mise à jour de `main`, puis publie l'artefact.
 
-## Sources officielles
+## Contenu pédagogique
 
-- [Eduscol - Programmes et ressources STI2D](https://eduscol.education.gouv.fr/5856/programmes-et-ressources-en-serie-sti2d)
-- [Eduscol - Specialite SIN](https://sti.eduscol.education.fr/formations/bac-technologique/sti2d-specialite-systemes-dinformation-et-numerique-sin)
-- [Eduscol - Horaires et organisation STI2D](https://eduscol.education.gouv.fr/5667/horaires-de-la-serie-sciences-et-technologies-de-l-industrie-et-du-developpement-durable-sti2d)
+Atlas est un aide-mémoire de révision. Les formules et leur domaine d'application doivent être vérifiés avec le cours et le référentiel de la spécialité suivie ; les contenus de SIN, EE, ITEC et AC ne sont pas interchangeables.
 
+## Sources
+
+- [Éduscol – Programmes et ressources STI2D](https://eduscol.education.gouv.fr/5856/programmes-et-ressources-en-serie-sti2d)
+- [Éduscol – Spécialité SIN](https://sti.eduscol.education.fr/formations/bac-technologique/sti2d-specialite-systemes-dinformation-et-numerique-sin)
+
+## Licence et marque
+
+Atlas est un projet indépendant et non affilié à NumWorks. NumWorks et Epsilon sont des marques de leurs propriétaires respectifs.

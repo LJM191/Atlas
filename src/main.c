@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 
-const char eadk_app_name[] __attribute__((section(".rodata.eadk_app_name"))) = "Atlas STI2D";
+const char eadk_app_name[] __attribute__((section(".rodata.eadk_app_name"))) = "Atlas";
 const uint32_t eadk_api_level __attribute__((section(".rodata.eadk_api_level"))) = 0;
 
 #define BG       ((eadk_color_t)0x0862)
@@ -170,7 +170,7 @@ static int entry_for(int cat,int pos) {
 static void frame(const char *section,const char *right) {
   rect(0,0,320,240,BG);
   rect(0,0,320,34,BAR);
-  txt("ATLAS STI2D",10,8,true,WHITE,BAR);
+  txt("ATLAS",10,8,true,WHITE,BAR);
   if(right)txt(right,236,11,false,CYAN,BAR);
   rect(0,35,320,2,ACCENT);
   txt(section,10,44,false,CYAN,BG);
@@ -210,13 +210,11 @@ static void draw_list(int cat,int selected,int offset) {
   txt("Fiches disponibles :",10,211,false,MUTED,BG);
 }
 static void draw_detail(const Entry *e) {
-  frame(e->category,"03");
-  txt(e->title,10,64,true,WHITE,BG);
-  rect(8,91,304,54,CARD);
-  txt(e->formula,15,108,true,CYAN,CARD);
-  txt(e->unit,12,158,false,ACCENT,BG);
-  txt(e->hint1,12,179,false,WHITE,BG);
-  txt(e->hint2,12,197,false,MUTED,BG);
+  frame(e->category,"FORMULE");
+  txt(e->title,10,67,true,WHITE,BG);
+  rect(8,99,304,72,CARD);
+  txt(e->formula,15,122,true,CYAN,CARD);
+  if(e->unit[0]) txt(e->unit,12,183,false,ACCENT,BG);
 }
 static void keep_visible(int *selected,int *offset,int count) {
   if(*selected<0)*selected=0;
@@ -224,41 +222,68 @@ static void keep_visible(int *selected,int *offset,int count) {
   if(*selected<*offset)*offset=*selected;
   if(*selected>=*offset+ROWS)*offset=*selected-ROWS+1;
 }
+static void wait_release(void) {
+  eadk_timing_msleep(140);
+}
+
 int main(void) {
-  int screen=0,cat=0,selected=0,offset=0;
-  eadk_keyboard_state_t previous=0;
-  bool redraw=true;
+  int screen=0,cat=0,selected=0,offset=0,current_entry=-1;
+  draw_home(selected,offset);
   while(true) {
     eadk_keyboard_state_t keys=eadk_keyboard_scan();
-    eadk_keyboard_state_t pressed=keys & ~previous;
-    previous=keys;
-    if(eadk_keyboard_key_down(pressed,eadk_key_on_off))return 0;
-    if(eadk_keyboard_key_down(pressed,eadk_key_back)) {
-      if(screen==2)screen=1;
-      else if(screen==1){screen=0;selected=cat;offset=cat<ROWS?0:cat-ROWS+1;}
-      redraw=true;
-    } else if(eadk_keyboard_key_down(pressed,eadk_key_up)) {
-      if(screen==0){selected--;if(selected<0)selected=(int)CATEGORY_COUNT-1;keep_visible(&selected,&offset,(int)CATEGORY_COUNT);}
-      else if(screen==1){selected--;if(selected<0)selected=count_for(cat)-1;keep_visible(&selected,&offset,count_for(cat));}
-      redraw=true;
-    } else if(eadk_keyboard_key_down(pressed,eadk_key_down)) {
-      if(screen==0){selected++;if(selected>=(int)CATEGORY_COUNT)selected=0;keep_visible(&selected,&offset,(int)CATEGORY_COUNT);}
-      else if(screen==1){selected++;if(selected>=count_for(cat))selected=0;keep_visible(&selected,&offset,count_for(cat));}
-      redraw=true;
-    } else if(eadk_keyboard_key_down(pressed,eadk_key_ok)) {
-      if(screen==0){cat=selected;screen=1;selected=0;offset=0;}
-      else if(screen==1){screen=2;}
-      redraw=true;
-    } else if(eadk_keyboard_key_down(pressed,eadk_key_left) || eadk_keyboard_key_down(pressed,eadk_key_right)) {
-      if(screen==2){screen=1;redraw=true;}
+    if(eadk_keyboard_key_down(keys,eadk_key_on_off)) return 0;
+
+    if(eadk_keyboard_key_down(keys,eadk_key_back)) {
+      if(screen==2) { screen=1; current_entry=-1; }
+      else if(screen==1) {
+        screen=0;
+        selected=cat;
+        offset=cat<ROWS?0:cat-ROWS+1;
+      }
+      wait_release();
+    } else if(eadk_keyboard_key_down(keys,eadk_key_up)) {
+      if(screen==0) {
+        selected--;
+        if(selected<0) selected=(int)CATEGORY_COUNT-1;
+        keep_visible(&selected,&offset,(int)CATEGORY_COUNT);
+      } else if(screen==1) {
+        selected--;
+        if(selected<0) selected=count_for(cat)-1;
+        keep_visible(&selected,&offset,count_for(cat));
+      }
+      wait_release();
+    } else if(eadk_keyboard_key_down(keys,eadk_key_down)) {
+      if(screen==0) {
+        selected++;
+        if(selected>=(int)CATEGORY_COUNT) selected=0;
+        keep_visible(&selected,&offset,(int)CATEGORY_COUNT);
+      } else if(screen==1) {
+        selected++;
+        if(selected>=count_for(cat)) selected=0;
+        keep_visible(&selected,&offset,count_for(cat));
+      }
+      wait_release();
+    } else if(eadk_keyboard_key_down(keys,eadk_key_ok)) {
+      if(screen==0) {
+        cat=selected;
+        screen=1;
+        selected=0;
+        offset=0;
+      } else if(screen==1) {
+        current_entry=entry_for(cat,selected);
+        if(current_entry>=0) screen=2;
+      }
+      wait_release();
+    } else if(eadk_keyboard_key_down(keys,eadk_key_left) ||
+              eadk_keyboard_key_down(keys,eadk_key_right)) {
+      if(screen==2) screen=1;
+      wait_release();
     }
-    if(redraw) {
-      eadk_display_wait_for_vblank();
-      if(screen==0)draw_home(selected,offset);
-      else if(screen==1)draw_list(cat,selected,offset);
-      else {int ix=entry_for(cat,selected);if(ix>=0)draw_detail(&entries[ix]);}
-      redraw=false;
-    }
+
+    eadk_display_wait_for_vblank();
+    if(screen==0) draw_home(selected,offset);
+    else if(screen==1) draw_list(cat,selected,offset);
+    else if(current_entry>=0) draw_detail(&entries[current_entry]);
     eadk_timing_msleep(25);
   }
   return 0;
