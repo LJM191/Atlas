@@ -1,4 +1,4 @@
-name: Build and release NumWorks Ultimate
+name: Build and release Atlas STI2D
 on:
   push:
     branches: [main]
@@ -14,10 +14,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Show build tool versions
-        run: |
-          node --version
-          npm --version
       - name: Install ARM toolchain
         uses: numworks/setup-arm-toolchain@latest
       - name: Check NumWorks linker
@@ -27,16 +23,17 @@ jobs:
       - name: Upload NWA artifact
         uses: actions/upload-artifact@v4
         with:
-          name: NumWorks-Ultimate-NWA
+          name: Atlas-STI2D-NWA
           path: output/app.nwa
           if-no-files-found: error
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v0.1.0
-          name: NumWorks Ultimate v0.1.0
+          tag_name: v0.2.0
+          name: Atlas STI2D v0.2.0
           body: |
-            Première version de NumWorks Ultimate.
-            Application externe EADK avec 21 formules STI2D.
+            Refonte de l'application : navigation sans rafraichissement continu,
+            interface reorganisee et base de fiches STI2D etendue.
+            Application externe EADK.
           files: output/app.nwa
           fail_on_unmatched_files: true
