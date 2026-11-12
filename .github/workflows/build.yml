@@ -1,8 +1,10 @@
-name: Build NumWorks Ultimate
+name: Build and release NumWorks Ultimate
 on:
   push:
     branches: [main]
   workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,3 +20,13 @@ jobs:
           name: NumWorks-Ultimate-NWA
           path: output/app.nwa
           if-no-files-found: error
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v0.1.0
+          name: NumWorks Ultimate v0.1.0
+          body: |
+            Première version de NumWorks Ultimate.
+            Application externe EADK avec 21 formules STI2D.
+          files: output/app.nwa
+          fail_on_unmatched_files: true
